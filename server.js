@@ -24,7 +24,7 @@ app.use(
 const db = require("./app/models/index.model");
 
 db.mongoose
-  .connect(`mongodb://localhost:27017/your-database-name`, {
+  .connect(`mongodb+srv://saharanit16:%24%23%40!@cluster0.uqcine6.mongodb.net/my_first_database`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
