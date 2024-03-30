@@ -3,7 +3,7 @@ const db = require("../models/index.model");
 const User = db.user;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
-
+const upload = require('../middlewares/multer');
 exports.signup=(req,res)=>{
 const user = new User({
   username: req.body.username,
@@ -12,7 +12,6 @@ const user = new User({
   password: bcrypt.hashSync(req.body.password, 8),
   role: req.body.role
 });
-
 user.save()
   .then(() => {
     res.status(200).send({ message: "User signed up successfully" });
@@ -54,6 +53,41 @@ exports.signin = async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 };
+exports.verifyedsignup = async(req,res) =>{
+  try {
+    await new Promise((resolve, reject) => {
+        upload(req, null, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+    const newUser = new VerifiedUser({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: req.body.password,
+        idProof: {
+            data: req.file.buffer,
+            contentType: req.file.mimetype
+        },
+        taxIdentificationNumber: req.body.taxIdentificationNumber,
+        panNumber: req.body.panNumber,
+        role: req.body.role || 'user',
+        dateOfBirth: req.body.dateOfBirth,
+        address: req.body.address,
+        phoneNumber: req.body.phoneNumber
+    });
+
+    const savedUser = await newUser.save();
+    return savedUser;
+} catch (error) {
+    console.error('Error saving user:', error);
+    throw error;
+}
+}
 exports.signout = async (req, res) => {
   try {
     req.session = null;
