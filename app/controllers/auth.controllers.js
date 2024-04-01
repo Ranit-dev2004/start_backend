@@ -20,6 +20,8 @@ user.save()
     res.status(500).send({ error: err.message });
   });
 }
+
+
 exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({
