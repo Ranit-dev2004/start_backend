@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cookieSession({
-    name: "bezkoder-session",
+    name: "Razil-session",
     keys: ["COOKIE_SECRET"],
     httpOnly: true
   })
@@ -36,7 +36,7 @@ db.mongoose
     process.exit();
   });
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to inoventure application." });
 });
 require("./app/routes/auth.routes")(app);
 const PORT = process.env.PORT || 8080;
